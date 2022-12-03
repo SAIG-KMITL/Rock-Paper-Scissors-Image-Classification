@@ -10,9 +10,10 @@ path = r'C:\chromedriver_win32\chromedriver.exe'
 ser = Service(path)
 
 options = webdriver.ChromeOptions()
-# options.headless = True
-options.add_argument("start-maximized")
 options.add_argument('--enable-javascript')
+# options.headless = True
+# options.add_argument("start-maximized")
+
 
  
 driver = webdriver.Chrome(service=ser, options=options)
@@ -27,7 +28,7 @@ time.sleep(5)
 
 ################# LOAD DATA ###################
 start = 20000
-end = 60001
+end = 80001
 step = 20000
 
 for i in range(start,end,step):
@@ -49,8 +50,7 @@ for i in range(start,end,step):
 		if act == True and p.text != 'Official':
 				print(p.text)
 				print('--------------------------')
-				act = False
-		
+				act = False		
 	
 ###############################################
 
