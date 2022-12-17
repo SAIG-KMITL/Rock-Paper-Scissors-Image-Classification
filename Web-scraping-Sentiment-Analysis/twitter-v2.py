@@ -57,7 +57,7 @@ tab1_layout = [
         ]
 
 tab2_layout = [
-            [sg.T('Twitter Name',size=(0,1),background_color=backgroundColor,text_color=textColor,font=('Courier',20,'bold'))],
+            [sg.T('Twitter',size=(0,1),background_color=backgroundColor,text_color=textColor,font=('Courier',20,'bold'))],
             [sg.In(key='-NAME-', font=('Courier 12')), sg.Button('COMPUTE', font=('Courier 15'),button_color = textColor, key='-COMPUTE2-')],
             [sg.Table(values=listTW, headings=headings, max_col_width=20,
                     auto_size_columns=True,
