@@ -130,7 +130,6 @@ while True:
             elif(l == 'negative'):
                 window[f'-OUTPUT{i+1}-'].update(f"{l} {np.round(float(s), 4)}", text_color=colorlist[2],background_color=backgroundColor) 
 
-
     if event == '-COMPUTE2-':
         textTW = twitter(values['-NAME-'])  
         for i in range(numTW):           
