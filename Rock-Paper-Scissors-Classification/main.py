@@ -3,6 +3,9 @@ from tensorflow.keras.preprocessing.image import img_to_array
 
 import cv2
 import numpy as np
+import PILasOPENCV as Image
+import PILasOPENCV as ImageDraw
+import PILasOPENCV as ImageFont
 
 from gameMain import Gesture
 from gameMain import RockPaperScissors
@@ -12,6 +15,9 @@ from constants import model_path, model_weights_path
 from constants import rectangle_color, text_color
 from constants import computer_gestures
 from constants import BG_path
+from constants import font
+
+
 
 
 class GestureModel:
@@ -41,7 +47,6 @@ class GestureModel:
 
 
 class WebCam:
-
     model = GestureModel(model_path,
                          model_weights_path)
 
@@ -53,11 +58,10 @@ class WebCam:
 
     @classmethod
     def create_text(cls, frame,
-                    text, font_scale=1,
+                    text, font_scale=2,
                     thickness=2, org=(x-w-10, y),
-                    color=text_color):
+                    color=text_color, font=font):
 
-        font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(img=frame, text=text,
                     org=org,
                     fontFace=font, fontScale=font_scale,
@@ -82,14 +86,13 @@ class WebCam:
 
             imgBG = cv2.imread(BG_path)
             ret, frame = cap.read()
-            frame = cv2.resize(frame,(0,0),None,0.656,0.656)
+            frame = cv2.resize(frame,(0,0),None,0.704, 0.704)
 
             gesture, percent = cls.model.predict(frame)
             cls.create_rectangle(frame)
 
             frame = cv2.flip(frame, 1)
             
-
             if not gesture == "empty":
                 frames_elapsed += 1
                 if frames_elapsed > 5:
@@ -98,10 +101,10 @@ class WebCam:
 
                     person_gesture = Gesture(gesture)
                     image = cv2.imread(computer_gestures[computer_gesture.name])
-                    image = cv2.resize(image, (180, 180))
-                    x_offset, y_offset = (350, 100)
+                    image = cv2.resize(image, (400, 400))
+                    x_offset, y_offset = (1360, 310)
 
-                    frame[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
+                    imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
 
                     result = RockPaperScissors.get_result(person_gesture, computer_gesture)
 
@@ -112,8 +115,8 @@ class WebCam:
                         rounds_ += 1
 
                     else:
-                        cls.create_text(frame, f"result: {result_}", org=(0, 150), color=(255, 255, 255))
-                        cls.create_text(frame, f"{gesture} {percent}%", org=(100, 100))
+                        cls.create_text(imgBG, f"{result_}", org=(895, 900), color=(0, 128, 255), font_scale=2)
+                        cls.create_text(frame, f"{gesture} {percent}%", org=(250, 80),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale=1)
 
                     frames_elapsed += 1
             else:
@@ -122,35 +125,31 @@ class WebCam:
                 frames_elapsed = 0
                 rounds = rounds_
 
-            cls.create_text(frame, f"frames: {frames_elapsed}", org=(100, 390), color=(0, 0, 0),
+            cls.create_text(frame, f"frames: {frames_elapsed}", org=(10, 500),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
                             font_scale=1, thickness=2)
             # cls.create_text(frame, f"Round: {rounds}", org=(150, 50), color=(255, 0, 0))
             # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
-            # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))
-            
-            # frame = cv2.resize(frame, (840, 472))  
-            
-            imgBG[54:526, 63:903] = frame   
-            cv2.imshow('Rock Paper Scissors!', imgBG)      
+            # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
+                      
+            imgBG[268:775, 175:1076] = frame   # y1:y2 , x1:x2
+            cv2.imshow('BG', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             
-            
-
             if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
                 break
 
-    @classmethod
-    def start(cls):
-        cap = cv2.VideoCapture(0)
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                continue
-            flipped_frame = cv2.flip(frame, 1)
-            resized_frame = cv2.resize(flipped_frame, (840, 472))
-            cv2.imshow('Rock Paper Scissors!', resized_frame)
-            if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
-                break
+    # @classmethod
+    # def start(cls):
+    #     cap = cv2.VideoCapture(0)
+    #     while cap.isOpened():
+    #         ret, frame = cap.read()
+    #         if not ret:
+    #             continue
+    #         flipped_frame = cv2.flip(frame, 1)
+    #         resized_frame = cv2.resizecv2.resize(flipped_frame,(0,0),None,0.458,0.458)
+    #         cv2.imshow('Rock Paper Scissors!', resized_frame)
+    #         if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
+    #             break
 
-        cap.release()
-        cv2.destroyWindow()
+    #     cap.release()
+    #     cv2.destroyWindow()
