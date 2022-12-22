@@ -82,6 +82,7 @@ class WebCam:
         while cap.isOpened():
 
             imgBG = cv2.imread(BG_path)
+            # imgFrm = cv2.imread(BG_path)
             ret, frame = cap.read()
             frame = cv2.resize(frame,(0,0),None,0.7402, 0.7402)
 
@@ -129,7 +130,7 @@ class WebCam:
             # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
             # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
                       
-            imgBG[255:788, 150:1097] = frame   # y1:y2 , x1:x2
+            imgBG[256:789, 150:1097] = frame   # y1:y2 , x1:x2
             cv2.imshow('BG', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             

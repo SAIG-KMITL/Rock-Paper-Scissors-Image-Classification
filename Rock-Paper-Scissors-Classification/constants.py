@@ -1,6 +1,6 @@
 import cv2
 
-x, y, w, h = 500, 100, 170, 170
+x, y, w, h = 455, 100, 170, 170
 
 model_path = "Testmodel/model2/model2.json"
 model_weights_path = "Testmodel/model2/best_weights.h5"
@@ -12,9 +12,9 @@ text_color = (153, 76, 0)
 font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 
 computer_gestures = {
-    "rock":     f"src/rock.png",
-    "paper":    f"src/paper.png",
-    "scissors": f"src/scissors.png"
+    "rock":     "src/rock.png",
+    "paper":    "src/paper.png",
+    "scissors": "src/scissors.png"
 }
 
 stronger_gesture = {

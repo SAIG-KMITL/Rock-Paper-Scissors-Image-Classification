@@ -31,8 +31,8 @@ class Gesture:
 
 class RockPaperScissors:
     ids = {
-        0: "person",
-        1: "computer",
+        0: "player",
+        1: "bot",
         2: "draw"
     }
 
