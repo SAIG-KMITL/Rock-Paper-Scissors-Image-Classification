@@ -14,6 +14,7 @@ from constants import model_path, model_weights_path
 from constants import rectangle_color, text_color
 from constants import computer_gestures
 from constants import BG_path
+from constants import FRM_path
 from constants import font
 
 
@@ -83,9 +84,14 @@ class WebCam:
         while cap.isOpened():
 
             imgBG = cv2.imread(BG_path)
-            # imgFrm = cv2.imread(BG_path)
+            imgBG = cv2.resize(imgBG, (1366,768))
+
+            imgFRM = cv2.imread(FRM_path, cv2.IMREAD_UNCHANGED)
+            imgFRM = cv2.resize(imgFRM, (732,412)) 
+
+
             ret, frame = cap.read()
-            frame = cv2.resize(frame,(0,0),None,0.7402, 0.7402)
+            frame = cv2.resize(frame,(0,0),None,0.526, 0.526)
 
             gesture, percent = cls.model.predict(frame)
             cls.create_rectangle(frame)
@@ -100,8 +106,8 @@ class WebCam:
 
                     person_gesture = Gesture(gesture)
                     image = cv2.imread(computer_gestures[computer_gesture.name], cv2.IMREAD_UNCHANGED)
-                    image = cv2.resize(image, (400, 400))
-                    imgBG = cvzone.overlayPNG(imgBG, image, (1340, 310))
+                    image = cv2.resize(image, (284, 284))
+                    imgBG = cvzone.overlayPNG(imgBG, image, (953, 220))
 
                     # x_offset, y_offset = (1340, 310)
                     # imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
@@ -115,8 +121,8 @@ class WebCam:
                         rounds_ += 1
 
                     else:
-                        cls.create_text(imgBG, f"{result_}", org=(895, 900), color=(0, 128, 255), font_scale=2)
-                        cls.create_text(frame, f"{gesture} {percent}%", org=(250, 80),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale=1)
+                        cls.create_text(imgBG, f"{result_}", org=(620, 640), color=(0, 128, 255), font_scale=2)
+                        cls.create_text(frame, f"{gesture} {percent}%", org=(181, 57),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale= 0.8)
 
                     frames_elapsed += 1
             else:
@@ -125,13 +131,17 @@ class WebCam:
                 frames_elapsed = 0
                 rounds = rounds_
 
-            cls.create_text(frame, f"frames: {frames_elapsed}", org=(10, 500),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
+            cls.create_text(frame, f"frames: {frames_elapsed}", org=(7, 356),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
                             font_scale=1, thickness=2)
             # cls.create_text(frame, f"Round: {rounds}", org=(150, 50), color=(255, 0, 0))
             # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
             # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
-                      
-            imgBG[256:789, 150:1097] = frame   # y1:y2 , x1:x2
+            
+                             
+            imgBG[182:561, 107:780] = frame   # y1:y2 , x1:x2
+            imgBG = cvzone.overlayPNG(imgBG, imgFRM, (78, 171))    
+            
+
             cv2.imshow('BG', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             
