@@ -27,6 +27,7 @@ class GestureModel:
     def preprocess(cls, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         roi = gray_frame[y:y + w, x:x + h]
+        cv2.imshow("test", roi)
         roi = cv2.resize(roi, (50, 50))
         img_pixels = img_to_array(roi)
         img_pixels = np.expand_dims(img_pixels, axis=0)
