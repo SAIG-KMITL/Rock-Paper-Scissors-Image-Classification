@@ -2,10 +2,9 @@ from tensorflow.keras.models import model_from_json
 from tensorflow.keras.preprocessing.image import img_to_array
 
 import cv2
+import cvzone
 import numpy as np
-import PILasOPENCV as Image
-import PILasOPENCV as ImageDraw
-import PILasOPENCV as ImageFont
+import matplotlib.image as mpimg
 
 from gameMain import Gesture
 from gameMain import RockPaperScissors
@@ -16,8 +15,6 @@ from constants import rectangle_color, text_color
 from constants import computer_gestures
 from constants import BG_path
 from constants import font
-
-
 
 
 class GestureModel:
@@ -86,7 +83,7 @@ class WebCam:
 
             imgBG = cv2.imread(BG_path)
             ret, frame = cap.read()
-            frame = cv2.resize(frame,(0,0),None,0.704, 0.704)
+            frame = cv2.resize(frame,(0,0),None,0.7402, 0.7402)
 
             gesture, percent = cls.model.predict(frame)
             cls.create_rectangle(frame)
@@ -100,11 +97,12 @@ class WebCam:
                         hand_exited += 1
 
                     person_gesture = Gesture(gesture)
-                    image = cv2.imread(computer_gestures[computer_gesture.name])
+                    image = cv2.imread(computer_gestures[computer_gesture.name], cv2.IMREAD_UNCHANGED)
                     image = cv2.resize(image, (400, 400))
-                    x_offset, y_offset = (1360, 310)
+                    imgBG = cvzone.overlayPNG(imgBG, image, (1340, 310))
 
-                    imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
+                    # x_offset, y_offset = (1340, 310)
+                    # imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
 
                     result = RockPaperScissors.get_result(person_gesture, computer_gesture)
 
@@ -131,7 +129,7 @@ class WebCam:
             # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
             # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
                       
-            imgBG[268:775, 175:1076] = frame   # y1:y2 , x1:x2
+            imgBG[255:788, 150:1097] = frame   # y1:y2 , x1:x2
             cv2.imshow('BG', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             
