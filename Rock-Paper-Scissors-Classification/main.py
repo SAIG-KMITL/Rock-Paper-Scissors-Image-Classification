@@ -87,8 +87,8 @@ class WebCam:
             imgBG = cv2.resize(imgBG, (1366,768))
 
             imgFRM = cv2.imread(FRM_path, cv2.IMREAD_UNCHANGED)
-            imgFRM = cv2.resize(imgFRM, (732,412)) 
-
+            # imgFRM = cv2.resize(imgFRM, (732,412)) 
+            imgFRM = cv2.resize(imgFRM, (695,423)) 
 
             ret, frame = cap.read()
             frame = cv2.resize(frame,(0,0),None,0.526, 0.526)
@@ -139,7 +139,8 @@ class WebCam:
             
                              
             imgBG[182:561, 107:780] = frame   # y1:y2 , x1:x2
-            imgBG = cvzone.overlayPNG(imgBG, imgFRM, (78, 171))    
+            # imgBG = cvzone.overlayPNG(imgBG, imgFRM, (78, 171))
+            imgBG = cvzone.overlayPNG(imgBG, imgFRM, (95, 165))      
             
 
             cv2.imshow('BG', imgBG)      
