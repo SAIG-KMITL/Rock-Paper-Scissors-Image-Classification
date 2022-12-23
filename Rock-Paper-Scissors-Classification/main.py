@@ -27,10 +27,10 @@ class GestureModel:
     @classmethod
     def preprocess(cls, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        roi = gray_frame[y:y + w, x:x + h]
-        cv2.imshow("test", roi)
-        roi = cv2.resize(roi, (50, 50))
-        img_pixels = img_to_array(roi)
+        handarea = gray_frame[y:y + w, x:x + h]
+        # cv2.imshow("test", handarea)
+        handarea = cv2.resize(handarea, (50, 50))
+        img_pixels = img_to_array(handarea)
         img_pixels = np.expand_dims(img_pixels, axis=0)
         img_pixels /= 255.0
         return img_pixels
@@ -131,8 +131,8 @@ class WebCam:
                 frames_elapsed = 0
                 rounds = rounds_
 
-            cls.create_text(frame, f"frames: {frames_elapsed}", org=(7, 356),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
-                            font_scale=1, thickness=2)
+            cls.create_text(frame, f"frames: {frames_elapsed}", org=(25, 370),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
+                            font_scale=0.8, thickness=2)
             # cls.create_text(frame, f"Round: {rounds}", org=(150, 50), color=(255, 0, 0))
             # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
             # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
