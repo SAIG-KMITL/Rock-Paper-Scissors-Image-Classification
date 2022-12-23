@@ -13,9 +13,9 @@ text_color = (153, 76, 0)
 font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 
 computer_gestures = {
-    "rock":     "src/rock.png",
-    "paper":    "src/paper.png",
-    "scissors": "src/scissors.png"
+    "rock":     "src/rockk.png",
+    "paper":    "src/paperr.png",
+    "scissors": "src/scissorss.png"
 }
 
 stronger_gesture = {

@@ -6,8 +6,8 @@ import cvzone
 import numpy as np
 import matplotlib.image as mpimg
 
-from gameMain import Gesture
-from gameMain import RockPaperScissors
+from method import Gesture
+from method import RockPaperScissors
 
 from constants import x, y, w, h
 from constants import model_path, model_weights_path
@@ -107,7 +107,7 @@ class WebCam:
                     person_gesture = Gesture(gesture)
                     image = cv2.imread(computer_gestures[computer_gesture.name], cv2.IMREAD_UNCHANGED)
                     image = cv2.resize(image, (284, 284))
-                    imgBG = cvzone.overlayPNG(imgBG, image, (953, 220))
+                    imgBG = cvzone.overlayPNG(imgBG, image, (960, 220))
 
                     # x_offset, y_offset = (1340, 310)
                     # imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
