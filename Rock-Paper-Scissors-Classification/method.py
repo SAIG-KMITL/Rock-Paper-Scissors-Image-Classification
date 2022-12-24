@@ -31,9 +31,9 @@ class Gesture:
 
 class RockPaperScissors:
     ids = {
-        0: "player",
-        1: "bot",
-        2: "draw"
+        0: "PLAYER",
+        1: "BOT",
+        2: "DRAW"
     }
 
     @classmethod
@@ -43,4 +43,4 @@ class RockPaperScissors:
             winner = arg_list.index(max(arg_list))
             return winner, f"{cls.ids[winner]} wins"
         else:
-            return 2, "draw"
+            return 2, "DRAW"

@@ -1,6 +1,7 @@
-numscale = 2
+number of scale = 3
 
 
+// select number 
 //  (1) 1280×720 
 //  (2) 1366×768 default
 //  (3) 1600×900 

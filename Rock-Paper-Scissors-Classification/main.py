@@ -27,7 +27,7 @@ from constants import font
 with open('config.txt') as f:
     contents = f.readlines()
     con = contents[0].split(" ")
-    numscale = int(con[2].replace("\n", ""))
+    numscale = int(con[4].replace("\n", ""))
 
 if(numscale == 1):
     scale = 0.9375    
@@ -48,7 +48,7 @@ class GestureModel:
     def preprocess(cls, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         handarea = gray_frame[math.ceil(y*scale):math.ceil((y + w)*scale), math.ceil(x*scale):math.ceil((x + h)*scale)]
-        cv2.imshow("test", handarea)
+        # cv2.imshow("test", handarea)
         handarea = cv2.resize(handarea, (50, 50))
         img_pixels = img_to_array(handarea)
         img_pixels = np.expand_dims(img_pixels, axis=0)
@@ -130,9 +130,6 @@ class WebCam:
                     image = cv2.resize(image, (math.ceil(284*scale), math.ceil(284*scale)))
                     imgBG = cvzone.overlayPNG(imgBG, image, (math.ceil(960*scale), math.ceil(220*scale)))
 
-                    # x_offset, y_offset = (1340, 310)
-                    # imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
-
                     result = RockPaperScissors.get_result(person_gesture, computer_gesture)
 
                     if hand_in_screen == 0:
@@ -156,9 +153,8 @@ class WebCam:
             imgBG[math.ceil(182*scale):math.ceil(561*scale), math.ceil(107*scale):math.ceil(781*scale)] = frame   # y1:y2 , x1:x2
             imgBG = cvzone.overlayPNG(imgBG, imgFRM, (math.ceil(95*scale), math.ceil(165*scale)))      
             
-
             cv2.imshow('SAIG-Rock Paper Scissors!', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             
-            if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
+            if cv2.waitKey(10) == ord('q'):
                 break

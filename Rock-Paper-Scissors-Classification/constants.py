@@ -5,7 +5,7 @@ x, y, w, h = 334, 71, 122, 122
 model_path = "model/modeltest02/model.json"
 model_weights_path = "model/modeltest02/model_weights.h5"
 
-BG_path = "src/BG2.png"
+BG_path = "src/BG.png"
 FRM_path = "src/frame.png"
 
 rectangle_color = (153, 76, 0)
