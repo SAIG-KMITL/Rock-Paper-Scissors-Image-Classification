@@ -3,3 +3,4 @@ cvzone
 numpy
 tensorflow
 random
+math
