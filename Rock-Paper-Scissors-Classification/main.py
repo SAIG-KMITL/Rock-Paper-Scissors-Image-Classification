@@ -5,6 +5,7 @@ import cv2
 import cvzone
 import numpy as np
 import matplotlib.image as mpimg
+import math
 
 from method import Gesture
 from method import RockPaperScissors
@@ -18,6 +19,25 @@ from constants import FRM_path
 from constants import font
 
 
+# (1)1280×720 
+# (2)1366×768 default
+# (3)1600×900 
+# (4)1920×1080 
+
+with open('config.txt') as f:
+    contents = f.readlines()
+    con = contents[0].split(" ")
+    numscale = int(con[2].replace("\n", ""))
+
+if(numscale == 1):
+    scale = 0.9375    
+elif(numscale == 3):
+    scale = 1.171875  
+elif(numscale == 4):
+    scale = 1.40625  
+else:
+    scale = 1
+
 class GestureModel:
     def __init__(self, model_path_, model_weights_path_):
         self.model = model_from_json(open(model_path_,"r").read())
@@ -27,8 +47,8 @@ class GestureModel:
     @classmethod
     def preprocess(cls, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        handarea = gray_frame[y:y + w, x:x + h]
-        # cv2.imshow("test", handarea)
+        handarea = gray_frame[math.ceil(y*scale):math.ceil((y + w)*scale), math.ceil(x*scale):math.ceil((x + h)*scale)]
+        cv2.imshow("test", handarea)
         handarea = cv2.resize(handarea, (50, 50))
         img_pixels = img_to_array(handarea)
         img_pixels = np.expand_dims(img_pixels, axis=0)
@@ -47,18 +67,18 @@ class GestureModel:
 
 class WebCam:
     model = GestureModel(model_path,
-                         model_weights_path)
+                         model_weights_path)         
 
     @classmethod
     def create_rectangle(cls, frame):
         cv2.rectangle(img=frame,
-                      pt1=(x, y), pt2=(x+w, y+h),
+                      pt1=(math.ceil(x*scale), math.ceil(y*scale)), pt2=(math.ceil((x+w)*scale), math.ceil((y+h)*scale)),
                       color=rectangle_color, thickness=5)
 
     @classmethod
     def create_text(cls, frame,
                     text, font_scale=2,
-                    thickness=2, org=(x-w-10, y),
+                    thickness=2, org=(x, y),
                     color=text_color, font=font):
 
         cv2.putText(img=frame, text=text,
@@ -84,14 +104,15 @@ class WebCam:
         while cap.isOpened():
 
             imgBG = cv2.imread(BG_path)
-            imgBG = cv2.resize(imgBG, (1366,768))
+            imgBG = cv2.resize(imgBG, (math.ceil(1366*scale),math.ceil(768*scale)))
 
             imgFRM = cv2.imread(FRM_path, cv2.IMREAD_UNCHANGED)
             # imgFRM = cv2.resize(imgFRM, (732,412)) 
-            imgFRM = cv2.resize(imgFRM, (695,423)) 
+            imgFRM = cv2.resize(imgFRM, (math.ceil(695*scale),math.ceil(423*scale))) 
 
             ret, frame = cap.read()
-            frame = cv2.resize(frame,(0,0),None,0.526, 0.526)
+            frame = cv2.resize(frame,(0,0),None,379*scale/720, 379*scale/720)
+            379*scale
 
             gesture, percent = cls.model.predict(frame)
             cls.create_rectangle(frame)
@@ -106,8 +127,8 @@ class WebCam:
 
                     person_gesture = Gesture(gesture)
                     image = cv2.imread(computer_gestures[computer_gesture.name], cv2.IMREAD_UNCHANGED)
-                    image = cv2.resize(image, (284, 284))
-                    imgBG = cvzone.overlayPNG(imgBG, image, (960, 220))
+                    image = cv2.resize(image, (math.ceil(284*scale), math.ceil(284*scale)))
+                    imgBG = cvzone.overlayPNG(imgBG, image, (math.ceil(960*scale), math.ceil(220*scale)))
 
                     # x_offset, y_offset = (1340, 310)
                     # imgBG[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
@@ -115,14 +136,12 @@ class WebCam:
                     result = RockPaperScissors.get_result(person_gesture, computer_gesture)
 
                     if hand_in_screen == 0:
-                        # scores[result[0]] += 1
                         hand_in_screen += 1
                         result_ = result[1]
-                        rounds_ += 1
 
                     else:
-                        cls.create_text(imgBG, f"{result_}", org=(620, 640), color=(0, 128, 255), font_scale=2)
-                        cls.create_text(frame, f"{gesture} {percent}%", org=(181, 57),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale= 0.8)
+                        cls.create_text(imgBG, f"{result_}", org=(math.ceil(620*scale), math.ceil(640*scale)), color=(0, 128, 255), font_scale=2*scale)
+                        cls.create_text(frame, f"{gesture} {percent}%", org=(math.ceil(181*scale), math.ceil(57*scale)),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale= 0.8*scale)
 
                     frames_elapsed += 1
             else:
@@ -131,36 +150,15 @@ class WebCam:
                 frames_elapsed = 0
                 rounds = rounds_
 
-            cls.create_text(frame, f"frames: {frames_elapsed}", org=(25, 370),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
-                            font_scale=0.8, thickness=2)
-            # cls.create_text(frame, f"Round: {rounds}", org=(150, 50), color=(255, 0, 0))
-            # cls.create_text(frame, f"Person: {scores[0]}", org=(100, 310), color=(255, 0, 0))
-            # cls.create_text(frame, f"Computer: {scores[1]}", org=(350, 310), color=(255, 0, 0))           
-            
+            cls.create_text(frame, f"frames: {frames_elapsed}", org=(math.ceil(25*scale), math.ceil(370*scale)),font = cv2.FONT_HERSHEY_DUPLEX ,color=(255, 255, 255),
+                            font_scale=0.8*scale, thickness=2)                      
                              
-            imgBG[182:561, 107:780] = frame   # y1:y2 , x1:x2
-            # imgBG = cvzone.overlayPNG(imgBG, imgFRM, (78, 171))
-            imgBG = cvzone.overlayPNG(imgBG, imgFRM, (95, 165))      
+            imgBG[math.ceil(182*scale):math.ceil(561*scale), math.ceil(107*scale):math.ceil(781*scale)] = frame   # y1:y2 , x1:x2
+            imgBG = cvzone.overlayPNG(imgBG, imgFRM, (math.ceil(95*scale), math.ceil(165*scale)))      
             
 
-            cv2.imshow('BG', imgBG)      
+            cv2.imshow('SAIG-Rock Paper Scissors!', imgBG)      
             # cv2.imshow('Rock Paper Scissors!', frame)
             
             if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
                 break
-
-    # @classmethod
-    # def start(cls):
-    #     cap = cv2.VideoCapture(0)
-    #     while cap.isOpened():
-    #         ret, frame = cap.read()
-    #         if not ret:
-    #             continue
-    #         flipped_frame = cv2.flip(frame, 1)
-    #         resized_frame = cv2.resizecv2.resize(flipped_frame,(0,0),None,0.458,0.458)
-    #         cv2.imshow('Rock Paper Scissors!', resized_frame)
-    #         if cv2.waitKey(10) == ord('q'):  # wait until 'q' key is pressed
-    #             break
-
-    #     cap.release()
-    #     cv2.destroyWindow()

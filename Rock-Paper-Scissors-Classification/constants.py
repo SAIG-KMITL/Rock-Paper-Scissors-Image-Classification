@@ -1,6 +1,6 @@
 import cv2
 
-x, y, w, h = 334, 71, 121, 121
+x, y, w, h = 334, 71, 122, 122
 
 model_path = "model/modeltest02/model.json"
 model_weights_path = "model/modeltest02/model_weights.h5"
