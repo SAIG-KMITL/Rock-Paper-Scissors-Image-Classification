@@ -2,8 +2,8 @@ import cv2
 
 x, y, w, h = 334, 71, 122, 122
 
-model_path = "model/modeltest02/model.json"
-model_weights_path = "model/modeltest02/model_weights.h5"
+model_path = "model/premodel/model.json"
+model_weights_path = "model/premodel/model_weights.h5"
 
 BG_path = "src/BG.png"
 FRM_path = "src/frame.png"
