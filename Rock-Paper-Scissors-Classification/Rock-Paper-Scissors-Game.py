@@ -1,4 +1,4 @@
-from main import WebCam
+from main import webCam
 
 
-WebCam.play_game()
+webCam.play_game()

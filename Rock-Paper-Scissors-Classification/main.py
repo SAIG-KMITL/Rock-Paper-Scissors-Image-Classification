@@ -66,7 +66,7 @@ class GestureModel:
         return predicted_gesture, round(predict_percent, 2)
 
 
-class WebCam:
+class webCam:
     model = GestureModel(model_path,
                          model_weights_path)         
 
