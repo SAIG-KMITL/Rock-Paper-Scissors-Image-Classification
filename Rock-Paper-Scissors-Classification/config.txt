@@ -1,4 +1,4 @@
-number of scale = 3
+number of scale = 2
 
 
 // select number 
