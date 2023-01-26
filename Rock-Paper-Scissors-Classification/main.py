@@ -47,7 +47,7 @@ class GestureModel:
     @classmethod
     def preprocess(cls, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray_frame = cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2RGB)
+        # gray_frame = cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2RGB)
         handarea = gray_frame[math.ceil(y*scale):math.ceil((y + w)*scale), math.ceil(x*scale):math.ceil((x + h)*scale)]
         # cv2.imshow("test", handarea)
         handarea = cv2.resize(handarea, (50, 50))
