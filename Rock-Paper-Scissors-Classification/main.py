@@ -1,6 +1,3 @@
-from tensorflow.keras.models import model_from_json
-from tensorflow.keras.preprocessing.image import img_to_array
-
 import cv2
 import cvzone
 import numpy as np
@@ -17,6 +14,12 @@ from constants import computer_gestures
 from constants import BG_path
 from constants import FRM_path
 from constants import font
+
+from tensorflow import keras
+from keras.models import model_from_json
+from keras.utils import img_to_array
+
+
 
 
 # (1)1280×720 
@@ -138,7 +141,7 @@ class webCam:
                         result_ = result[1]
 
                     else:
-                        cls.create_text(imgBG, f"{result_}", org=(math.ceil(620*scale), math.ceil(640*scale)), color=(0, 128, 255), font_scale=2*scale)
+                        cls.create_text(imgBG, f"{result_}", org=(math.ceil(620*scale), math.ceil(640*scale)), color=(0, 128, 255), font_scale=3*scale, thickness=5)
                         cls.create_text(frame, f"{gesture} {percent}%", org=(math.ceil(181*scale), math.ceil(57*scale)),font = cv2.FONT_HERSHEY_DUPLEX ,font_scale= 0.8*scale)
 
                     frames_elapsed += 1
